@@ -53,38 +53,3 @@ resource "aws_instance" "First_personal_project" {
     Name = "terraform"
   }
 }
-module "db" {
-  source = "terraform-aws-modules/rds/aws"
-
-  identifier = "inventorydb"
-
-  engine            = "mysql"
-  engine_version    = "8.0.35"
-  instance_class    = "db.t3.micro"
-  allocated_storage = 5
-
-  db_name  = "inventorydb"
-  username = "tobi"
-  password = "badejomessi"
-  port     = "3306"
-
-  vpc_security_group_ids = [aws_security_group.terraform_sg.id]
-
-  maintenance_window = "Mon:00:00-Mon:03:00"
-  backup_window      = "03:00-06:00"
-# DB parameter group
-  family = "mysql8.0"
-
-  # DB option group
-  major_engine_version = "8.0"
-
-  tags = {
-    Owner       = "user"
-    Environment = "free"
-  }
-
-  # DB subnet group
-  create_db_subnet_group = true
-  subnet_ids             = [module.vpc.private_subnets[0], module.vpc.private_subnets[1]]
-
-}
