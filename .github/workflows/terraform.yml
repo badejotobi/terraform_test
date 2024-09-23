@@ -1,8 +1,6 @@
 name: 'Terraform'
 
 on:
-  push:
-    branches: [ "main" ]
   workflow_dispatch:
     inputs:
       # Terraform action you want to perform
@@ -18,7 +16,7 @@ permissions:
 
 jobs:
   Terraform_apply:
-    name: 'Terraform Apply'
+    name: 'Terraform_apply'
     if: ${{ github.event.inputs.action == 'Terraform_apply' }}
     runs-on: ubuntu-latest
     defaults:
@@ -55,7 +53,7 @@ jobs:
         run: terraform apply -auto-approve
 
   Terraform_destroy:
-    name: 'Terraform Destroy'
+    name: 'Terraform_destroy'
     if: ${{ github.event.inputs.action == 'Terraform_destroy' }}
     runs-on: ubuntu-latest
     defaults:
