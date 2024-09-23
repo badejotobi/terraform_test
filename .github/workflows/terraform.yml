@@ -11,9 +11,6 @@ on:
         - Terraform_apply
         - Terraform_destroy
 
-permissions:
-  contents: read
-
 jobs:
   Terraform_apply:
     name: 'Terraform_apply'
@@ -22,7 +19,6 @@ jobs:
     defaults:
       run:
         working-directory: ${{ github.event.inputs.resource }}  # Ensure resource input is provided
-    environment: testing
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
