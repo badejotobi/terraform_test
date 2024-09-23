@@ -1,3 +1,69 @@
+
+provider "aws" {
+  region = var.region
+}
+data "aws_ssm_parameter" "ami_id" {
+  name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+}
+
+resource "aws_s3_bucket" "terraform_state" {
+  bucket = "teing-ranyansh-random-freeyansh"
+
+  tags = {
+    Name        = "My bucket"
+    Environment = "Dev"
+  }
+}
+
+
+resource "aws_s3_bucket_ownership_controls" "example" {
+  bucket = aws_s3_bucket.terraform_state.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_acl" "example" {
+  depends_on = [aws_s3_bucket_ownership_controls.example]
+
+  bucket = aws_s3_bucket.terraform_state.id
+  acl    = "private"
+}
+resource "aws_kms_key" "mykey" {
+  description             = "This key is used to encrypt bucket objects"
+  deletion_window_in_days = 10
+}
+
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
+  bucket = aws_s3_bucket.terraform_state.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.mykey.arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+resource "aws_s3_bucket_versioning" "versioning_example" {
+  bucket = aws_s3_bucket.terraform_state.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+
+resource "aws_dynamodb_table" "terraform_locks" {
+  name         = "terraform-lock-table"
+  billing_mode = "PAY_PER_REQUEST" # No need to manage capacity
+  hash_key     = "LockID"          # Primary key is 'LockID'
+
+  attribute {
+    name = "LockID"
+    type = "S" # 'S' for string
+  }
+}
+
 terraform {
   backend "s3" {
     bucket         = "teing-ranyansh-random-freeyans"          # Replace with your S3 bucket name
@@ -9,12 +75,6 @@ terraform {
 }
 
 
-provider "aws" {
-  region = var.region
-}
-data "aws_ssm_parameter" "ami_id" {
-  name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
-}
 
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
