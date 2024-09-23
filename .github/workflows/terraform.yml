@@ -16,9 +16,6 @@ jobs:
     name: 'Terraform_apply'
     if: ${{ github.event.inputs.action == 'Terraform_apply' }}
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ github.event.inputs.resource }}  # Ensure resource input is provided
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
@@ -52,9 +49,6 @@ jobs:
     name: 'Terraform_destroy'
     if: ${{ github.event.inputs.action == 'Terraform_destroy' }}
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ github.event.inputs.resource }}
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
