@@ -1,12 +1,14 @@
 terraform {
   backend "s3" {
-    bucket         = "teing-ranyansh-random-freeyans" # Replace with your S3 bucket name
-    key            = "state/terraform.tfstate"        # Path to store the state file in the bucket
-    region         = "us-east-1"                      # AWS region of the S3 bucket (e.g., us-east-1)
-    dynamodb_table = "terraform-lock-table"           # DynamoDB table for state locking (optional but recommended)
-    encrypt        = true                             # Encrypt state file at rest using SSE-S3 (default: true)
+    bucket         = "teing-ranyansh-random-freeyans"          # Replace with your S3 bucket name
+    key            = "state/terraform.tfstate" # Path to store the state file in the bucket
+    region         = "us-east-1"              # AWS region of the S3 bucket (e.g., us-east-1)
+    dynamodb_table = "terraform-lock-table"         # DynamoDB table for state locking (optional but recommended)
+    encrypt        = true                           # Encrypt state file at rest using SSE-S3 (default: true)
   }
 }
+
+
 provider "aws" {
   region = var.region
 }
