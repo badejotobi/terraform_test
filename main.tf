@@ -88,25 +88,6 @@ module "vpc" {
 
 
 }
-resource "aws_s3_bucket" "terraform_state" {
-  bucket = "teing-ranyansh-random-freeyans"
-
-  tags = {
-    Name        = "My bucket"
-    Environment = "Dev"
-  }
-}
-
-resource "aws_dynamodb_table" "terraform_locks" {
-  name         = "terraform-lock-table"
-  billing_mode = "PAY_PER_REQUEST" # No need to manage capacity
-  hash_key     = "LockID"          # Primary key is 'LockID'
-
-  attribute {
-    name = "LockID"
-    type = "S" # 'S' for string
-  }
-}
 
 
 resource "aws_security_group" "terraform_sg" {
