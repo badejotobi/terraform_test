@@ -6,8 +6,8 @@ data "aws_ssm_parameter" "ami_id" {
   name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
 }
 
-resource "aws_s3_bucket" "terraform_states" {
-  bucket = "teing-ranyansh-random-freeyanwesh"
+resource "aws_s3_bucket" "terraform_stateus" {
+  bucket = "teing-ranyansh-random-freeyalowesh"
 
   tags = {
     Name        = "My bucket"
@@ -54,7 +54,7 @@ resource "aws_s3_bucket_versioning" "versioning_example" {
 
 
 resource "aws_dynamodb_table" "terraform_lockser" {
-  name         = "terraform-lock-table"
+  name         = "terraform-lock-tableaw"
   billing_mode = "PAY_PER_REQUEST" # No need to manage capacity
   hash_key     = "LockID"          # Primary key is 'LockID'
 
@@ -66,10 +66,10 @@ resource "aws_dynamodb_table" "terraform_lockser" {
 
 terraform {
   backend "s3" {
-    bucket         = "teing-ranyansh-random-freeyanwesh"          # Replace with your S3 bucket name
+    bucket         = aws_s3_bucket.terraform_state.id         # Replace with your S3 bucket name
     key            = "state/terraform.tfstate" # Path to store the state file in the bucket
     region         = "us-east-1"              # AWS region of the S3 bucket (e.g., us-east-1)
-    dynamodb_table = "terraform-lock-table"         # DynamoDB table for state locking (optional but recommended)
+    dynamodb_table = "terraform-lock-tableaw"         # DynamoDB table for state locking (optional but recommended)
     encrypt        = true                           # Encrypt state file at rest using SSE-S3 (default: true)
   }
 }
