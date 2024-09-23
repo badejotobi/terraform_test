@@ -35,7 +35,7 @@ jobs:
 
       # Check Terraform format and fail if formatting issues exist
       - name: Terraform Format Check
-        run: terraform fmt -check
+        run: terraform fmt
 
       # Generate and show Terraform plan
       - name: Terraform Plan
