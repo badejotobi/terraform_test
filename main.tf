@@ -17,7 +17,7 @@ resource "aws_s3_bucket" "terraform_stateus" {
 
 
 resource "aws_s3_bucket_ownership_controls" "example" {
-  bucket = aws_s3_bucket.terraform_state.id
+  bucket = aws_s3_bucket.terraform_stateus.id
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
@@ -26,7 +26,7 @@ resource "aws_s3_bucket_ownership_controls" "example" {
 resource "aws_s3_bucket_acl" "example" {
   depends_on = [aws_s3_bucket_ownership_controls.example]
 
-  bucket = aws_s3_bucket.terraform_state.id
+  bucket = aws_s3_bucket.terraform_stateus.id
   acl    = "private"
 }
 resource "aws_kms_key" "mykey" {
@@ -36,7 +36,7 @@ resource "aws_kms_key" "mykey" {
 
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
-  bucket = aws_s3_bucket.terraform_state.id
+  bucket = aws_s3_bucket.terraform_stateus.id
 
   rule {
     apply_server_side_encryption_by_default {
@@ -46,7 +46,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
   }
 }
 resource "aws_s3_bucket_versioning" "versioning_example" {
-  bucket = aws_s3_bucket.terraform_state.id
+  bucket = aws_s3_bucket.terraform_stateus.id
   versioning_configuration {
     status = "Enabled"
   }
@@ -66,7 +66,7 @@ resource "aws_dynamodb_table" "terraform_lockser" {
 
 terraform {
   backend "s3" {
-    bucket         = "teing-ranyansh-random-freeyalowesh"         # Replace with your S3 bucket name
+    bucket         =  aws_s3_bucket.terraform_stateus.id        # Replace with your S3 bucket name
     key            = "state/terraform.tfstate" # Path to store the state file in the bucket
     region         = "us-east-1"              # AWS region of the S3 bucket (e.g., us-east-1)
     dynamodb_table = "terraform-lock-tableaw"         # DynamoDB table for state locking (optional but recommended)
