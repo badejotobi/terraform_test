@@ -7,7 +7,7 @@ data "aws_ssm_parameter" "ami_id" {
 }
 
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "teing-ranyansh-random-freeyansh"
+  bucket = "teing-ranyansh-random-freeyanwesh"
 
   tags = {
     Name        = "My bucket"
@@ -53,7 +53,7 @@ resource "aws_s3_bucket_versioning" "versioning_example" {
 }
 
 
-resource "aws_dynamodb_table" "terraform_locks" {
+resource "aws_dynamodb_table" "terraform_lockser" {
   name         = "terraform-lock-table"
   billing_mode = "PAY_PER_REQUEST" # No need to manage capacity
   hash_key     = "LockID"          # Primary key is 'LockID'
