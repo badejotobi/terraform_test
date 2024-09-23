@@ -22,12 +22,70 @@ module "vpc" {
   name = "my-vpc"
   cidr = "10.0.0.0/16"
 
-  azs             = ["us-east-1a","us-east-1b"]
+  azs             = ["us-east-1a", "us-east-1b"]
   public_subnets  = ["10.0.1.0/24"]
   private_subnets = ["10.0.101.0/24", "10.0.102.0/24"]
 
 
 }
+resource "aws_s3_bucket" "terraform_state" {
+  bucket = "teing-ranyansh-random-freeyans"
+
+  tags = {
+    Name        = "My bucket"
+    Environment = "Dev"
+  }
+}
+
+
+resource "aws_s3_bucket_ownership_controls" "example" {
+  bucket = aws_s3_bucket.terraform_state.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_acl" "example" {
+  depends_on = [aws_s3_bucket_ownership_controls.example]
+
+  bucket = aws_s3_bucket.terraform_state.id
+  acl    = "private"
+}
+resource "aws_kms_key" "mykey" {
+  description             = "This key is used to encrypt bucket objects"
+  deletion_window_in_days = 10
+}
+
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
+  bucket = aws_s3_bucket.terraform_state.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.mykey.arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+resource "aws_s3_bucket_versioning" "versioning_example" {
+  bucket = aws_s3_bucket.terraform_state.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+
+resource "aws_dynamodb_table" "terraform_locks" {
+  name         = "terraform-lock-table"
+  billing_mode = "PAY_PER_REQUEST" # No need to manage capacity
+  hash_key     = "LockID"          # Primary key is 'LockID'
+
+  attribute {
+    name = "LockID"
+    type = "S" # 'S' for string
+  }
+}
+
 
 resource "aws_security_group" "terraform_sg" {
   vpc_id = module.vpc.vpc_id
