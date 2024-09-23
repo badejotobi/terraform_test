@@ -6,7 +6,7 @@ data "aws_ssm_parameter" "ami_id" {
   name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
 }
 
-resource "aws_s3_bucket" "terraform_state" {
+resource "aws_s3_bucket" "terraform_states" {
   bucket = "teing-ranyansh-random-freeyanwesh"
 
   tags = {
@@ -66,7 +66,7 @@ resource "aws_dynamodb_table" "terraform_lockser" {
 
 terraform {
   backend "s3" {
-    bucket         = "teing-ranyansh-random-freeyans"          # Replace with your S3 bucket name
+    bucket         = "teing-ranyansh-random-freeyanwesh"          # Replace with your S3 bucket name
     key            = "state/terraform.tfstate" # Path to store the state file in the bucket
     region         = "us-east-1"              # AWS region of the S3 bucket (e.g., us-east-1)
     dynamodb_table = "terraform-lock-table"         # DynamoDB table for state locking (optional but recommended)
