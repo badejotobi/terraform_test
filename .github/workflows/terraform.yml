@@ -25,10 +25,9 @@ jobs:
           tfsec_actions_working_dir: .
           tfsec_output_format: json  # Correct output format
           tfsec_output_file: tfsec.json
-
-      - name: List files
-        run: ls -al
+          
       - name: upload artifact
+        if: always()
         uses: actions/upload-artifact@v3
         with: 
           name: terraform sec findings
