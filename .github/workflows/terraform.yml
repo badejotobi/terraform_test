@@ -25,6 +25,7 @@ jobs:
           tfsec_output_format: tfsec.json
       - name: upload artifact
         uses: actions/upload-artifact@v3
+        if: always()
         with: 
           name: terraform sec findings
           path: tfsec.json
