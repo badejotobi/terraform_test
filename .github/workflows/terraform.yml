@@ -12,6 +12,17 @@ on:
         - Terraform_destroy
 
 jobs:
+  terraform_sec:
+    name: tf_Sec
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: scan
+        uses: triat/terraform-security-scan@v3.1.0
+        with:
+          tfsec_output_format: json
   Terraform_apply:
     name: 'Terraform_apply'
     if: ${{ github.event.inputs.action == 'Terraform_apply' }}
