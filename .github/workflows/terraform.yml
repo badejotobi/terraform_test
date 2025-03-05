@@ -24,6 +24,7 @@ jobs:
         with:
           tfsec_actions_working_dir: .
           tfsec_output_format: json  # Correct output format
+          tfsec_version: 1.23.0
           tfsec_output_file: tfsec.json
           
       - name: upload artifact
